@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags:
+  - Ground
+  - Ladder
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Ground
+  - Ladder
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3964265413
+    locked: 0
+  - name: Ground
+    uniqueID: 1422168323
+    locked: 0
+  - name: Ladder
+    uniqueID: 3748998525
+    locked: 0
+  - name: Decor
+    uniqueID: 851664979
+    locked: 0
+  - name: Player
+    uniqueID: 3912354219
+    locked: 0
+  - name: UI
+    uniqueID: 2065417473
+    locked: 0
+  m_RenderingLayers:
+  - Default
