@@ -61,5 +61,14 @@ TagManager:
   - name: UI
     uniqueID: 2065417473
     locked: 0
+  - name: design
+    uniqueID: 3417555801
+    locked: 0
+  - name: tile
+    uniqueID: 595108433
+    locked: 0
+  - name: New Layer TILE2
+    uniqueID: 4044269311
+    locked: 0
   m_RenderingLayers:
   - Default
