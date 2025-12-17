@@ -39,6 +39,10 @@ public class PlayerController : MonoBehaviour
     bool isJumping = false;
     float jumpTimeCounter = 0f;
 
+    //controller
+    public Animator animate;
+    private bool wake = false;
+    public int facingDirection = 1;
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -53,6 +57,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
+            animate.SetTrigger("jump");
+
             lastJumpPressedTime = Time.time;
         }
 
@@ -69,6 +75,7 @@ public class PlayerController : MonoBehaviour
             if ((Time.time - lastGroundedTime) <= coyoteTime && !isOnLadder)
             {
                 // start jump
+
                 StartJump();
                 lastJumpPressedTime = -999f;
             }
@@ -88,6 +95,7 @@ public class PlayerController : MonoBehaviour
         // If player releases jump early, stop variable jump hold
         if (Input.GetButtonUp("Jump"))
         {
+           
             isJumping = false;
             jumpTimeCounter = 0f;
         }
@@ -97,6 +105,19 @@ public class PlayerController : MonoBehaviour
     {
         // horizontal movement (applied in physics)
         rb.linearVelocity = new Vector2(horizontal * moveSpeed, rb.linearVelocity.y);
+        if (horizontal > 0 && transform.localScale.x < 0 || horizontal < 0 && transform.localScale.x > 0)
+        {
+            Flip();
+        }
+       if(horizontal != 0)
+        {
+            wake = true;
+            animate.SetBool("walk", wake);
+        }else
+        {
+            wake = false;
+            animate.SetBool("walk", wake);
+        }
 
         // ladder movement
         if (isOnLadder)
@@ -138,6 +159,7 @@ public class PlayerController : MonoBehaviour
 
     void StartJump()
     {
+       
         // set vertical velocity directly (clean and responsive)
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         isJumping = true;
@@ -194,115 +216,11 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
     }
+
+    void Flip()
+    {
+        facingDirection *= -1;
+        transform.localScale = new Vector3(transform.localScale.x * -1, transform.localScale.y, transform.localScale.z);
+    }
 }
 
-
-
-//using UnityEngine;
-//using UnityEngine.SceneManagement;
-
-//public class PlayerController : MonoBehaviour
-//{
-
-//    public float jumpForce = 12f;
-//    public float jumpTime = 0.25f;
-//    private float jumpTimeCounter;
-//    private bool isJumping;
-
-//    public Transform groundCheck;
-//    public LayerMask groundLayer;
-
-//    private Rigidbody2D rb;
-
-//    public float moveSpeed = 5f;
-
-//    private bool isGrounded = false;
-
-//    public float climbSpeed = 5f;
-//    private bool isOnLadder;
-//    private float defaultGravity;
-
-//    public Vector2 respawnPoint;
-//    void Start()
-//    {
-//        rb = GetComponent<Rigidbody2D>();
-//        defaultGravity = rb.gravityScale;
-
-//    }
-
-//    void Update()
-//    {
-//        // Horizontal movement
-//        float h = Input.GetAxisRaw("Horizontal"); // A/D or Left/Right
-//        bool isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
-//        rb.linearVelocity = new Vector2(h * moveSpeed, rb.linearVelocity.y);
-
-//            if (isGrounded && Input.GetButtonDown("Jump"))
-//    {
-//        isJumping = true;
-//        jumpTimeCounter = jumpTime;
-//        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-//    }
-
-//    if (Input.GetButton("Jump") && isJumping)
-//    {
-//        if (jumpTimeCounter > 0)
-//        {
-//            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-//            jumpTimeCounter -= Time.deltaTime;
-//        }
-//        else
-//        {
-//            isJumping = false;
-//        }
-//    }
-
-//    if (Input.GetButtonUp("Jump"))
-//    {
-//        isJumping = false;
-//    }
-
-
-//        if (isOnLadder)
-//        {
-//            float vertical = Input.GetAxisRaw("Vertical");
-//            rb.linearVelocity = new Vector2(rb.linearVelocity.x, vertical * climbSpeed);
-//            rb.gravityScale = 0;
-//        }
-//        else
-//        {
-//            rb.gravityScale = defaultGravity;
-//        }
-
-//    }
-
-//    private void OnTriggerEnter2D(Collider2D col)
-//    {
-//        if (col.CompareTag("Ladder"))
-//            isOnLadder = true;
-//    }
-
-//    private void OnTriggerExit2D(Collider2D col)
-//    {
-//        if (col.CompareTag("Ladder"))
-//            isOnLadder = false;
-//    }
-
-
-//    // Simple ground check using collisions
-//    void OnCollisionEnter2D(Collision2D col)
-//    {
-//        if (col.gameObject.CompareTag("Ground"))
-//            isGrounded = true;
-//    }
-//    void OnCollisionExit2D(Collision2D col)
-//    {
-//        if (col.gameObject.CompareTag("Ground"))
-//            isGrounded = false;
-//    }
-
-//    public void Die()
-//    {
-//        transform.position = respawnPoint;
-//    }
-//}
